@@ -2,7 +2,6 @@ var http = require('http');
 var fs = require('fs');
 var request = require('request');
 var moment = require('moment-timezone')
-var size ='';
 var data;
 var url = 'https://cfb-solrac.herokuapp.com/v1/date/'+moment().tz('America/Chicago').format('YYYYMMDD');
 
@@ -20,7 +19,7 @@ function getdata(callback){
 })
 }
 getdata(function(data){
-  fs.writeFile('index.html', "<head><style>body{background-color: white;color: black;font-family: 'Arial';font-size: 12px;font-weight: bold;}.floatingbox {float: left;width:150px;height:85px;margin:0px;border:1px solid}.split1 {float: left;width:70%;height:100%;margin-left:5px;}.split2 {float: right;width:20%;height:100%;text-align: right;margin-right:5px}</style></head>", function(err){if(err) throw err;})
+  fs.writeFile('index.html', "<head><style>body{background-color: white;color: black;font-family: 'Arial';font-size: 12px;font-weight: bold;}.floatingbox {float: left;width:150px;height:85px;margin:5px;border:2px solid}.split1 {float: left;width:70%;height:100%;margin-left:5px;}.split2 {float: right;width:20%;height:100%;text-align: right;margin-right:5px}</style></head>", function(err){if(err) throw err;})
 for (var i=0;i<data.length;i++){
   var home = '';
   var away = '';
