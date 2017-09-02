@@ -4,7 +4,7 @@ var request = require('request');
 var moment = require('moment-timezone')
 var size ='';
 var data;
-var url = 'HEROKU-URL-HERE'+moment().tz('America/Chicago').format('YYYYMMDD');
+var url = 'https://cfb-solrac.herokuapp.com/v1/date/'+moment().tz('America/Chicago').format('YYYYMMDD');
 
 function getdata(callback){
   request({
@@ -20,13 +20,13 @@ function getdata(callback){
 })
 }
 getdata(function(data){
-  fs.writeFile('index.html', "<head><style>body{background-color: darkgrey;color: white;font-family: 'Arial';font-size: 12px;font-weight: bold;}.floatingbox {float: left;width:150px;height:85px;margin:0px;border:2px solid}.split1 {float: left;width:70%;height:100%;margin-left:5px;}.split2 {float: right;width:20%;height:100%;text-align: right;margin-right:5px}</style></head>", function(err){if(err) throw err;})
+  fs.writeFile('index.html', "<head><style>body{background-color: white;color: black;font-family: 'Arial';font-size: 12px;font-weight: bold;}.floatingbox {float: left;width:150px;height:85px;margin:0px;border:1px solid}.split1 {float: left;width:70%;height:100%;margin-left:5px;}.split2 {float: right;width:20%;height:100%;text-align: right;margin-right:5px}</style></head>", function(err){if(err) throw err;})
 for (var i=0;i<data.length;i++){
   var home = '';
   var away = '';
   var homes =data[i].scores.home;
   var aways =data[i].scores.away;
-  var q ='Q';
+  var q ='Q';//need a live game for info
   var timetill=moment(data[i].date).fromNow()
   
   if (data[i].homeTeam.rank<26){home=data[i].homeTeam.rank+' '} //add rank if <26
