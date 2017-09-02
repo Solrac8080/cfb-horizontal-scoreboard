@@ -4,7 +4,7 @@ var request = require('request');
 var moment = require('moment-timezone')
 var size ='';
 var data;
-var url = 'https://cfb-solrac.herokuapp.com/v1/date/'+moment().tz('America/Chicago').format('YYYYMMDD');
+var url = 'HEROKU-URL-HERE'+moment().tz('America/Chicago').format('YYYYMMDD');
 
 function getdata(callback){
   request({
