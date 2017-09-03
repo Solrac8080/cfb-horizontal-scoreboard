@@ -25,8 +25,14 @@ for (var i=0;i<data.length;i++){
   var away = '';
   var homes =data[i].scores.home;
   var aways =data[i].scores.away;
-  var q ='Q';//need a live game for info
+  var q =data[i].status.period;//need a live game for info
   var timetill=moment(data[i].date).fromNow()
+  if (timetill[timetill.length-1]=='o'){
+    timetill=data[i].status.clock;
+    if (data[i].status.period=='F'){
+      timetill="FINAL"
+    }
+  }
   
   if (data[i].homeTeam.rank<26){home=data[i].homeTeam.rank+' '} //add rank if <26
   if (data[i].awayTeam.rank<26){home=data[i].awayTeam.rank+' '}
@@ -49,6 +55,10 @@ for (var i=0;i<data.length;i++){
         response.write(html);  
         response.end();  
     }).listen(3000);
+    fs.unlink('index.html', function (err) {
+      if (err) throw err;
+      console.log('File deleted!');
+    });
 });
 
 })
