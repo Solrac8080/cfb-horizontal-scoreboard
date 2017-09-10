@@ -50,29 +50,38 @@
 
 	</style>
 	<script>
-		//
 		var leng=0;
 		var jsondata=[]
-		var conf=window.location.search.substring(1).split(',');
-		for(j=0;j<conf.length;j++){
-			switch (conf[j]){
+		var conf=[]
+		var GET = {};
+		var query = window.location.search.substring(1).split("&");
+		for (var i = 0, max = query.length; i < max; i++){
+			if (query[i] === ""){continue;}
+			var param = query[i].split("=");
+			GET[decodeURIComponent(param[0])] = decodeURIComponent(param[1] || "");
+		}
+		//console.log(GET)
+		
+		
+		for(j=0;j<GET.conf.split(',').length;j++){
+			switch (GET.conf.split(',')[j]){
 				case 'acc':
-					conf[j]='atlantic-coast';
+					conf.push('atlantic-coast');
 					break;
 				case 'b10':
-					conf[j]='big-ten';
+					conf.push('big-ten');
 					break;
 				case 'b12':
-					conf[j]='big-12';
+					conf.push('big-12');
 					break;
 				case 'p12':
-					conf[j]='pac-12';
+					conf.push('pac-12');
 					break;
 				case 'sec':
-					conf[j]='southeastern';
+					conf.push('southeastern');
 					break;
 				case 't25':
-					conf[j]='top-25';
+					conf.push('top-25');
 					break;
 			}
 		}
