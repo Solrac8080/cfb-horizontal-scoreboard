@@ -60,7 +60,6 @@
 			var param = query[i].split("=");
 			GET[decodeURIComponent(param[0])] = decodeURIComponent(param[1] || "");
 		}
-		//console.log(GET)
 		
 		
 		for(j=0;j<GET.conf.split(',').length;j++){
@@ -97,6 +96,7 @@
 					games.push(json.scoreboard[i].games[j]);
 				}
 			}
+
 			makehtml(games)
 			
 		}
@@ -109,6 +109,7 @@
 					games.push(json.scoreboard[i].games[j]);
 				}
 			}
+			for(var x in games)games[x].gameState == "final" ? data.push( data.splice(x,1)[0] ) : 0;
 			updatehtml(games)
 			
 		}
@@ -118,7 +119,6 @@
 			if(week.length==1){
 				week = "0"+week
 			}
-			console.log(week)
 			return week
 		}
 		
@@ -142,7 +142,6 @@
 		
 		function makehtml(data) {
 				$('body').html('')
-				console.log(conf)
 				for(i=0;i<data.length;i++){
 					if(data[i].conference.includes(conf[0])==false&&data[i].conference.includes(conf[1])==false){continue;}
 					if (data[i].gameState=='cancelled'||data[i].gameState=='canceled'){continue;}
