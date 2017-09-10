@@ -51,6 +51,29 @@
 	<script>
 		var leng=0;
 		var jsondata=[]
+		var conf=window.location.search.substring(1).split(',');
+		for(j=0;j<conf.length;j++){
+			switch (conf[j]){
+				case 'acc':
+					conf[j]='atlantic-coast';
+					break;
+				case 'b10':
+					conf[j]='big-ten';
+					break;
+				case 'b12':
+					conf[j]='big-12';
+					break;
+				case 'p12':
+					conf[j]='pac-12';
+					break;
+				case 'sec':
+					conf[j]='southeastern';
+					break;
+				case 't25':
+					conf[j]='top-25';
+					break;
+			}
+		}
 		
 		function makedata(json) {
 			var games=[];
@@ -77,8 +100,11 @@
 		}
 
 		function getweek(){
-			//automate
-			var week = '03'
+			week = moment().diff(moment("08232017", 'MMDDYYYY'), 'week').toString()
+			if(week.length==1){
+				week = "0"+week
+			}
+			console.log(week)
 			return week
 		}
 		
@@ -103,7 +129,7 @@
 		function makehtml(data) {
 				$('body').html('')
 				for(i=0;i<data.length;i++){
-					//if(data[i].conference.includes('big-12')==false&&data[i].conference.includes('top-25')==false){continue;}
+					if(data[i].conference.includes(conf[0])==false&&data[i].conference.includes(conf[1])==false){continue;}
 					if (data[i].gameState=='cancelled'||data[i].gameState=='canceled'){continue;}
 					var hrank = '';
 					var arank = '';
@@ -117,6 +143,8 @@
 		
 		function updatehtml(data) {
 				for(k=0;k<data.length;k++){
+					if(data[k].conference.includes(conf[0])==false&&data[k].conference.includes(conf[1])==false){continue;}
+					if(data[k].gameState=='cancelled'||data[k].gameState=='canceled'){continue;}
 					if(data[k].gameState=='pre'){
 						$("."+data[k].id+"-time").html(moment.unix(data[k].startTimeEpoch).fromNow());
 					}
