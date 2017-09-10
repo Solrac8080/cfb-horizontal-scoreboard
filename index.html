@@ -1,4 +1,5 @@
 <head>
+	
 	<title>Horizontal CFB Scoreboard by Solrac8080</title>
 	<link rel="icon" type="img/png" href="https://github.com/ionic-team/ionicons/raw/master/png/512/ios7-americanfootball.png">
 	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -49,6 +50,7 @@
 
 	</style>
 	<script>
+		//
 		var leng=0;
 		var jsondata=[]
 		var conf=window.location.search.substring(1).split(',');
@@ -128,6 +130,7 @@
 		
 		function makehtml(data) {
 				$('body').html('')
+				console.log(conf)
 				for(i=0;i<data.length;i++){
 					if(data[i].conference.includes(conf[0])==false&&data[i].conference.includes(conf[1])==false){continue;}
 					if (data[i].gameState=='cancelled'||data[i].gameState=='canceled'){continue;}
