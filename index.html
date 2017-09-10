@@ -65,6 +65,9 @@
 		
 		for(j=0;j<GET.conf.split(',').length;j++){
 			switch (GET.conf.split(',')[j]){
+				case 'all':
+					conf.push('all-conf');
+					break;
 				case 'acc':
 					conf.push('atlantic-coast');
 					break;
