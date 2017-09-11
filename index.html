@@ -96,7 +96,7 @@
 					games.push(json.scoreboard[i].games[j]);
 				}
 			}
-
+			for(var x in games)games[x].gameState == "final" ? games.push( games.splice(x,1)[0] ) : 0;
 			makehtml(games)
 			
 		}
