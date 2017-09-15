@@ -15,7 +15,7 @@
 		background-image: url(https://i.imgur.com/fGP4yw2.png);
 		color: #2a3169;
 		font-family: 'Roboto', sans-serif;
-		font-size: 12px;
+		font-size: 16px;
 	}
 	p{
 		margin-bottom: 12px;
@@ -25,14 +25,14 @@
 		border-radius: 5px;
 		background-image: url(https://i.imgur.com/UBLceGW.png);
 		float: left;
-		width:182px;
-		height:56px;
-		margin:4px;
+		width:201px;
+		height:72px;
+		margin:5px;
 		box-shadow: 0px 5px 10px #888888;
 	}
 	.split1 {
 		float: left;
-		width:140px;
+		width:143px;
 		height:100%;
 		margin-left:2px;
 	}
@@ -134,7 +134,7 @@
 				dataType: "jsonp",
 				complete: function(){
 					$(".floatingbox").click(function() {
-						$(this).toggleClass('hide')
+						$(this).toggle()//Class('hide')
 					})
 				}
 			})
