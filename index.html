@@ -1,6 +1,25 @@
-<script src="https://raw.githubusercontent.com/Solrac8080/cfb-horizontal-scoreboard/dev/cfbdata.js"></script>
+<script src="cfbdata.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<style>
+.wide{
+	height: 220px;
+	width: 999999px;
+}
+.box{
+	display: inline;
+	height:110px;
+	width: 300px;
+	background-color: green;
+	float: left;
+	border: 2px;
+	border-radius: 10px;
+	padding: 5px;
+	margin: 5px;
+}
+</style>
 
 <script>
 cfbdata.schedule.getSchedule({
@@ -8,10 +27,10 @@ cfbdata.schedule.getSchedule({
     year: 2017,
     week: 3
 }).then((data) => {
-	//console.log(data)
+	console.log(data)
 	for (var i in data.content.schedule){
 		for (j =0;j<data.content.schedule[i].games.length;j++){
-			$('body').append('<h1>'+data.content.schedule[i].games[j].competitions[0].competitors[0].team.displayName+' vs '+data.content.schedule[i].games[j].competitions[0].competitors[1].team.displayName+'</h1>')
+			$('.wide').append('<div class="box">'+data.content.schedule[i].games[j].competitions[0].competitors[0].team.displayName+' vs '+data.content.schedule[i].games[j].competitions[0].competitors[1].team.displayName+' @ '+data.content.schedule[i].games[j].competitions[0].date+'</div>')
 		}
 		
 	}
@@ -19,5 +38,8 @@ cfbdata.schedule.getSchedule({
 
 </script>
 <body>
+<div class="wide">
+
+</div>
 
 </body>
