@@ -1,33 +1,54 @@
-<script src="https://raw.githubusercontent.com/Solrac8080/cfb-horizontal-scoreboard/dev/cfbdata.js"></script>
+<script src="https://rawgit.com/Solrac8080/cfb-horizontal-scoreboard/dev/cfbdata.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
 <style>
+::-webkit-scrollbar { 
+    display: none; 
+	}
+body{
+	margin:0px;
+	font-size: 17px
+}
 .wide{
 	height: 220px;
-	width: 24000px;
+	width: 2000px;
 }
 .box{
 	display: inline;
-	height:90px;
-	width: 280px;
-	background-color: green;
+	height: auto;
+	width: 242px;
+	background-color: chartreuse;
 	float: left;
-	border: 2px;
-	border-radius: 10px;
+	border: 0px;
+	border-radius: 5px;
 	padding: 5px;
-	margin: 5px;
+	margin: 2px;
+	box-shadow: 0px 5px 6px #888888;
 }
 .divider{
-	width:300px;
+	width:256px;
 	height:220px;
 	float:left;
+}
+.lefthalf{
+	width:167px;
+	float:left;
+}
+.righthalf{
+	width:75px;
+	float:right;
+	text-align: right;
+}
+.title{
+	font-weight: bold;
 }
 </style>
 
 <script>
-function isOdd(num) { return num % 2;}
+function isOdd(num) { return num % 3;}
+function getdata(){
 cfbdata.schedule.getSchedule({
     groups: 80,
     year: 2017,
@@ -35,21 +56,60 @@ cfbdata.schedule.getSchedule({
 }).then((data) => {
 	console.log(data)
 	var counter = 0
-	var text =''
+	var text =[]
+	var games =[]
 	for (var i in data.content.schedule){
 		for (j =0;j<data.content.schedule[i].games.length;j++){
-			console.log(counter)
-			if(isOdd(counter)==0){text=text+'<div class="divider">'}
-			text=text+'<div class="box">'+data.content.schedule[i].games[j].competitions[0].competitors[0].team.displayName+' vs '+data.content.schedule[i].games[j].competitions[0].competitors[1].team.displayName+' @ '+data.content.schedule[i].games[j].competitions[0].date+'</div>\n'
-			if(isOdd(counter)==1){text=text+'</div>'}
-		
-			counter++
+			games.push(data.content.schedule[i].games[j])
 		}
-		
 	}
-	$('.wide').html(text)
+	if(games[games.length-1].status.type.description!="Final"){
+		for(var x in games)games[x].status.type.description == "Final" ? games.push( games.splice(x,1)[0] ) : 0;
+	}
+	for (var i in games){
+		var home=games[i].competitions[0].competitors[0]
+		var away=games[i].competitions[0].competitors[1]
+		var game=games[i]
+		if (game.status.type.description=="Canceled"){continue;}
+		//WRITING HTML
+		if(isOdd(counter)==0){text.push('<div class="divider">\n')}
+		text.push('<div class="box">\n')
+		text.push('<div class="lefthalf">\n')
+		text.push('<div class="title">\n')
+		text.push(moment(game.date).format('dddd hh:mm a'))
+		text.push('</div>\n')
+		text.push('<div class="team">\n')
+		text.push('<img src="'+home.team.logo+'"style="width: 15px;">')
+		text.push(home.team.location)
+		text.push('</div>\n')
+		text.push('<div class="team">\n')
+		text.push('<img src="'+away.team.logo+'"style="width: 15px;">')
+		text.push(away.team.location)
+		text.push('</div>\n')
+		text.push('</div>\n')
+		text.push('<div class="righthalf">\n')
+		text.push('<div class="title">\n')
+		text.push(game.status.type.description)
+		text.push('</div>\n')
+		text.push('<div class="team">\n')
+		text.push(home.score)
+		text.push('</div>\n')
+		text.push('<div class="team">\n')
+		text.push(away.score)
+		text.push('</div>\n')
+		text.push('</div>\n')
+		text.push('</div>\n')
+		if(isOdd(counter)==2){text.push('</div>\n')}
+		//DONE WRITING HTML
+		counter++
+	}
+	$('.wide').width(Math.ceil(counter/3)*257+'px');
+	$('.wide').html(text.join(''))
 });
-
+}
+setInterval(function(){
+	getdata()
+}, 15000);
 </script>
 <body>
 <div class="wide">
