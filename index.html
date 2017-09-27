@@ -1,249 +1,203 @@
 <head>
-	
-	<title>Horizontal CFB Scoreboard by Solrac8080</title>
-	<link rel="icon" type="img/png" href="https://github.com/ionic-team/ionicons/raw/master/png/512/ios7-americanfootball.png">
-	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" type="text/javascript"></script>
-	<link href="https://fonts.googleapis.com/css?family=Roboto:700" rel="stylesheet">
-	
-	<style>
-	::-webkit-scrollbar { 
+<title>Horizontal CFB Scoreboard by Solrac8080</title>
+<link rel="icon" type="img/png" href="https://github.com/ionic-team/ionicons/raw/master/png/512/ios7-americanfootball.png">
+<script src="https://rawgit.com/Solrac8080/cfb-horizontal-scoreboard/dev/cfbdata.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+
+<style>
+html {
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+}
+::-webkit-scrollbar { 
     display: none; 
 	}
-	body{
-		background-image: url(https://i.imgur.com/fGP4yw2.png);
-		color: #2a3169;
-		font-family: 'Roboto', sans-serif;
-		font-size: 16px;
-	}
-	p{
-		margin-bottom: 12px;
-		margin-top: 2px;
-	}
-	.floatingbox {
-		border-radius: 5px;
-		background-image: url(https://i.imgur.com/UBLceGW.png);
-		float: left;
-		width:200px;
-		height:72px;
-		margin:5px;
-		box-shadow: 0px 5px 10px #888888;
-	}
-	.split1 {
-		float: left;
-		width:143px;
-		height:100%;
-		margin-left:2px;
-	}
-	.split2 {
-		float: right;
-		width:38px;
-		height:100%;
-		text-align: center;
-		margin-right:2px
-	}
-	.redzone {
-		background-color: #FF1654;
-	}
-	.hide {
-		opacity: 0.5;
-	}
-	.done {
-		background-color: #247BA0;
-	}
-	</style>
-	<script>
-		var leng=0;
-		var jsondata=[]
-		var conf=[]
-		var GET = {};
-		var query = window.location.search.substring(1).split("&");
-		for (var i = 0, max = query.length; i < max; i++){
-			if (query[i] === ""){continue;}
-			var param = query[i].split("=");
-			GET[decodeURIComponent(param[0])] = decodeURIComponent(param[1] || "");
-		}
-		
-		
-		for(j=0;j<GET.conf.split(',').length;j++){
-			switch (GET.conf.split(',')[j]){
-				case 'all':
-					conf.push('all-conf');
-					break;
-				case 'acc':
-					conf.push('atlantic-coast');
-					break;
-				case 'b10':
-					conf.push('big-ten');
-					break;
-				case 'b12':
-					conf.push('big-12');
-					break;
-				case 'p12':
-					conf.push('pac-12');
-					break;
-				case 'sec':
-					conf.push('southeastern');
-					break;
-				case 't25':
-					conf.push('top-25');
-					break;
-			}
-		}
-		
-		function makedata(json) {
-			var games=[];
-			for(var i=0;i<json.scoreboard.length;i++){
-				leng=leng+json.scoreboard[i].games.length;
-				for(j=0;j<json.scoreboard[i].games.length;j++){
-					games.push(json.scoreboard[i].games[j]);
-				}
-			}
-			if(games[games.length-1].gameState!="final"){
-			for(var x in games)games[x].gameState == "final" ? games.push( games.splice(x,1)[0] ) : 0;
-			}
-			makehtml(games)
-		}
-		
-		function updatedata(json) {
-			var games=[];
-			for(var i=0;i<json.scoreboard.length;i++){
-				leng=leng+json.scoreboard[i].games.length;
-				for(j=0;j<json.scoreboard[i].games.length;j++){
-					games.push(json.scoreboard[i].games[j]);
-				}
-			}
-			if(games[games.length-1].gameState!="final"){
-			for(var x in games)games[x].gameState == "final" ? games.push( games.splice(x,1)[0] ) : 0;
-			}
-			updatehtml(games)
-		}
+body{
+	margin:0px;
+	font-size: 17px
+}
+.wide{
+	height: 220px;
+	width: 2000px;
+}
+.box{
+	position: relative;
+	display: inline;
+	height: 60;
+	width: 95%;
+	background-image: url(https://i.imgur.com/UBLceGW.png);
+	float: left;
+	border: 0px;
+	border-radius: 5px;
+	padding: 5px;
+	margin: 2px;
+	box-shadow: 0px 3px 5px #888888;
+}
+.divider{
+	width:240px;
+	height:220px;
+	float:left;
+}
+.lefthalf{
+	width:153px;
+	float:left;
+}
+.righthalf{
+	width:75px;
+	float:right;
+	text-align: right;
+}
+.title{
+	font-weight: bold;
+}
+.red{
+	background-image: url(https://i.imgur.com/PzoNnXT.png);
+}
+.team{
+	position: relative;
+}
+.winner{
+	font-weight: bold;
+	color: red;
+}
+</style>
 
-		function getweek(){
-			week = moment().diff(moment("08232017", 'MMDDYYYY'), 'week').toString()
-			if(week.length==1){
-				week = "0"+week
+<script>
+function isOdd(num) { return num % 3;}
+function getdata(callback){
+	cfbdata.scoreboard.getScoreboard({
+		groups: 80,
+		year: 2017,
+		week: 5
+	}).then((data) => {
+		var games =[]
+		for (j =0;j<data.events.length;j++){
+			games.push(data.events[j])
+		}
+		//console.log(games)
+		callback(games)
+	})
+}
+var firstload=1
+var scores=[]
+function writehtml(){
+	getdata( function(games){
+	var counter = 0
+	var text =[]
+	console.log(games)
+	for (var i=0;i<games.length;i++){
+		var home=games[i].competitions[0].competitors[0]
+		var away=games[i].competitions[0].competitors[1]
+		var game=games[i]
+		var Title = moment(game.date).format('dddd hh:mm a')
+		var Period = game.status.type.description
+		if (game.status.type.description=="In Progress"||game.status.type.description=="Live"){
+			Title=game.competitions[0].situation.shortDownDistanceText+' '+game.status.displayClock
+			Period=game.status.period
+			switch(Period){
+				case 1:
+					Period=Period+'st'
+					break;
+				case 2:
+					Period=Period+'nd'
+					break;
+				case 3:
+					Period=Period+'rd'
+					break;
+				case 4:
+					Period=Period+'th'
+					break;
 			}
-			return week
 		}
-		
-		function make(){
-			$.ajax({
-				url: "http://data.ncaa.com/jsonp/scoreboard/football/fbs/2017/"+getweek()+"/scoreboard.html?callback=makedata",
-				dataType: "jsonp",
-				complete: function(){
-					$(".floatingbox").click(function() {
-						$(this).toggle()//Class('hide')
-					})
-				}
-			})
+		var hometeam=home.team.location
+		var awayteam=away.team.location
+		if (hometeam.length>12){
+			hometeam=home.team.abbreviation
 		}
-		
-		function update(){
-			$.ajax({
-				url: "http://data.ncaa.com/jsonp/scoreboard/football/fbs/2017/"+getweek()+"/scoreboard.html?callback=updatedata",
-				dataType: "jsonp"
-			})
+		if (awayteam.length>12){
+			awayteam=away.team.abbreviation
 		}
-		
-		
-		
-		
-		
-		function makehtml(data) {
-				$('body').html('')
-				for(i=0;i<data.length;i++){
-					if(data[i].conference.includes(conf[0])==false&&data[i].conference.includes(conf[1])==false){continue;}
-					if (data[i].gameState=='cancelled'||data[i].gameState=='canceled'){continue;}
-					var hrank = '';
-					var arank = '';
-					if (data[i].home.teamRank >0){hrank='('+data[i].home.teamRank+') '}
-					if (data[i].away.teamRank >0){arank='('+data[i].away.teamRank+') '}
-					var timeclock = data[i].timeclock;
-					if(timeclock == ''){timeclock="<br>"}
-					$('body').append('<div class="floatingbox '+data[i].id+'-box"><div class="split1"><p class="'+data[i].id+'-time">'+moment.unix(data[i].startTimeEpoch).format('dddd hh:mm a')+'</p><div class="'+data[i].id+'-homename">'+hrank+data[i].home.nameRaw+'</div><div class="'+data[i].id+'-awayname">'+arank+data[i].away.nameRaw+'</div></div><div class="split2"><div class="'+data[i].id+'-period">'+data[i].gameState+'</div><div class="'+data[i].id+'-timeclock">'+timeclock+'</div><div class="'+data[i].id+'-home">'+data[i].home.currentScore+'</div><div class="'+data[i].id+'-away">'+data[i].away.currentScore+'</div></div></div>')
-				}
+		if (game.status.type.description=="Canceled"){continue;}
+		if (home.score==scores[home.team.location]){var homeclass='team';}else{var homeclass='team hig'}
+		if (away.score==scores[away.team.location]){var awayclass='team'}else{var awayclass='team hig'}
+		if(game.competitions[0].hasOwnProperty('situation')){
+			if (game.competitions[0].situation.possession==home.id){homeclass=homeclass+' ion-ios-americanfootball'}
+			if (game.competitions[0].situation.possession==away.id){awayclass=awayclass+' ion-ios-americanfootball'}
 		}
-		
-		function updatehtml(data) {
-				for(k=0;k<data.length;k++){
-					if(data[k].conference.includes(conf[0])==false&&data[k].conference.includes(conf[1])==false){continue;}
-					if(data[k].gameState=='cancelled'||data[k].gameState=='canceled'){continue;}
-					if(data[k].gameState=='pre'){
-						//$("."+data[k].id+"-time").html(moment.unix(data[k].startTimeEpoch).fromNow());
-					}
-					if(data[k].gameState=='live'){
-						var down = data[k].status.down;
-						if (down == 1){down=down+'st'}
-						if (down == 2){down=down+'nd'}
-						if (down == 3){down=down+'rd'}
-						if (down == 4){down=down+'th'}
-						if (data[k].alerts.redzone!=0){
-							if($("."+data[k].id+"-box")["0"].classList[2]!="redzone"){
-								$("."+data[k].id+"-box").toggleClass("redzone")
-							}
-						}
-						if (data[k].alerts.redzone==0){
-							if($("."+data[k].id+"-box")["0"].classList[2]=="redzone"){
-								$("."+data[k].id+"-box").toggleClass("redzone")
-							}
-						}
-						if(data[k].downToGo!=""){
-						$("."+data[k].id+"-time").html(data[k].downToGo)
-						} else {
-							$("."+data[k].id+"-time").html('<br>')
-						}
-						$("."+data[k].id+"-timeclock").html(data[k].timeclock)
-						$("."+data[k].id+"-period").html(data[k].currentPeriod)
-						if(data[k].status.possession==data[k].home.nameRaw){
-							if($("."+data[k].id+"-homename")["0"].classList[1]!="ion-ios-americanfootball"){
-								$("."+data[k].id+"-homename").toggleClass("ion-ios-americanfootball")
-							}
-							if($("."+data[k].id+"-awayname")["0"].classList[1]=="ion-ios-americanfootball"){
-								$("."+data[k].id+"-awayname").toggleClass("ion-ios-americanfootball")
-							}
-						}
-						if(data[k].status.possession==data[k].away.nameRaw){
-							if($("."+data[k].id+"-awayname")["0"].classList[1]!="ion-ios-americanfootball"){
-								$("."+data[k].id+"-awayname").toggleClass("ion-ios-americanfootball")
-							}
-							if($("."+data[k].id+"-homename")["0"].classList[1]=="ion-ios-americanfootball"){
-								$("."+data[k].id+"-homename").toggleClass("ion-ios-americanfootball")
-							}
-						}
-					}
-					if(data[k].gameState=='final'){
-						if($("."+data[k].id+"-box")["0"].classList[2]=="redzone"){
-							$("."+data[k].id+"-box").toggleClass("redzone")
-						}
-						$("."+data[k].id+"-period").html(data[k].gameState)
-						$("."+data[k].id+"-homename").removeClass("ion-ios-americanfootball")
-						$("."+data[k].id+"-awayname").removeClass("ion-ios-americanfootball")
-						if(data[k].home.winner=="true"){
-							if($("."+data[k].id+"-homename").hasClass("ion-trophy")==false){
-								$("."+data[k].id+"-homename").toggleClass("ion-trophy")
-								$("."+data[k].id+"-time").html(data[k].home.nameRaw+" Won")
-							}
-						}
-						if(data[k].away.winner=="true"){
-							if($("."+data[k].id+"-awayname").hasClass("ion-trophy")==false){
-								$("."+data[k].id+"-awayname").toggleClass("ion-trophy")
-								$("."+data[k].id+"-time").html(data[k].away.nameRaw+" Won")
-							}
-						}
-					}
-					$("."+data[k].id+"-home").html(data[k].home.currentScore);
-					$("."+data[k].id+"-away").html(data[k].away.currentScore);
-				}
+		if (game.status.type.description=="Scheduled"){
+			if (game.competitions[0].broadcasts.length!=0){
+				Period=game.competitions[0].broadcasts[0].names[0]
+			}
 		}
-		setInterval(function(){
-			update()
-		}, 15000);
-	</script>
-	
+		var boxclass='box'
+		if(game.competitions[0].hasOwnProperty('situation')){
+			if(game.competitions[0].situation.isRedZone){
+				boxclass=boxclass+' red'}
+		}
+		var homewin='';
+		var awaywin='';
+		if (game.status.type.description=='Final'){
+			if(home.winner){homewin='winner';homeclass='winner';Title=hometeam+' won!';}
+			if(away.winner){awaywin='winner';awayclass='winner';Title=awayteam+' won!';}
+		}
+		if (home.curatedRank.current!=99){hometeam=home.curatedRank.current+' '+hometeam}
+		if (away.curatedRank.current!=99){awayteam=away.curatedRank.current+' '+awayteam}
+		//WRITING HTML
+		if(isOdd(counter)==0){text.push('<div class="divider">\n')}
+		text.push('<div class="'+boxclass+'">\n')
+		text.push('<div class="lefthalf">\n')
+		text.push('<div class="title">\n')
+		text.push(Title)
+		text.push('</div>\n')
+		text.push('<div class="'+homewin+'">\n')
+		text.push('<img src="'+home.team.logo+'"style="width: 15px;">')
+		text.push(hometeam)
+		text.push('</div>\n')
+		text.push('<div class="'+awaywin+'">\n')
+		text.push('<img src="'+away.team.logo+'"style="width: 15px;">')
+		text.push(awayteam)
+		text.push('</div>\n')
+		text.push('</div>\n')
+		text.push('<div class="righthalf">\n')
+		text.push('<div class="title">\n')
+		text.push(Period)
+		text.push('</div>\n')
+		text.push('<div class="'+homeclass+'">\n')
+		text.push(home.score)
+		text.push('</div>\n')
+		text.push('<div class="'+awayclass+'">\n')
+		text.push(away.score)
+		text.push('</div>\n')
+		text.push('</div>\n')
+		text.push('</div>\n')
+		if(isOdd(counter)==2){text.push('</div>\n')}
+		//DONE WRITING HTML
+		counter++
+		scores[home.team.location]=home.score
+		scores[away.team.location]=away.score
+	}
+	$('.wide').width(Math.ceil(counter/3)*240+'px');
+	$('.wide').html(text.join(''))
+	if (firstload==0){
+		$('.hig').effect('highlight', 6000);
+	}
+	firstload=0
+	})
+
+};
+
+writehtml()
+setInterval(function(){
+	writehtml()
+}, 10000);
+
+</script>
 </head>
+<body>
+<div class="wide">
 
-<body onload='make()'>
-
+</div>
 </body>
